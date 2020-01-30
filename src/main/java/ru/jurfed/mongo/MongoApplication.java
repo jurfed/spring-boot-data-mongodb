@@ -1,6 +1,9 @@
 package ru.jurfed.mongo;
 
+import ru.jurfed.mongo.domain.Address;
+import ru.jurfed.mongo.domain.Person;
 import ru.jurfed.mongo.domain.User;
+import ru.jurfed.mongo.repository.PersonMongoRepository;
 import ru.jurfed.mongo.repository.UserMongoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -21,20 +24,12 @@ public class MongoApplication {
     @Autowired
     private UserMongoRepository userMongoRepository;
 
+    @Autowired
+    private PersonMongoRepository personMongoRepository;
+
     public static void main(String[] args) {
         SpringApplication.run(MongoApplication.class, args);
     }
-
-
-/*	@Bean
-	public MongoOperations keyValueTemplate(){
-		return new KeyValueTemplate(keyValueAdapter());
-	}
-
-	@Bean
-	public KeyValueAdapter keyValueAdapter(){
-		return new MongoOperations(WeakHashMap.class);
-	}*/
 
 
     @Autowired
@@ -70,6 +65,23 @@ public class MongoApplication {
 
         List<User> user4 = mongoOperations.find(query(where("age").is(23)), User.class);
         user4.forEach(System.err::println);
+
+        System.err.println("\n---------------------Persons---------------------");
+        this.personMongoRepository.deleteAll();
+
+        Person person = new Person("Bob", "Ivanov");
+        Address address = new Address("Krasnodarskiy kray 34");
+        person.setAddress(address);
+        this.personMongoRepository.save(person);
+
+        Person person2 = new Person("Alice", "Silezneva");
+        Address address2 = new Address("St Petersburg 34");
+        person2.setAddress(address2);
+        this.personMongoRepository.save(person2);
+
+        List<Person> persons = this.personMongoRepository.findAll();
+        persons.forEach(System.err::println);
+
     }
 
 }
