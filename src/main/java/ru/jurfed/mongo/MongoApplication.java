@@ -79,6 +79,7 @@ public class MongoApplication {
         person2.setAddress(address2);
         this.personMongoRepository.save(person2);
 
+
         List<Person> persons = this.personMongoRepository.findAll();
         persons.forEach(System.err::println);
 
