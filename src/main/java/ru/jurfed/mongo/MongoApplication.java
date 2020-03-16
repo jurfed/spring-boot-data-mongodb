@@ -92,7 +92,6 @@ public class MongoApplication {
         person2.setEmails(Arrays.asList(email11, email12, email13));
         this.personMongoRepository.save(person2);
 
-
         List<Person> persons = this.personMongoRepository.findAll();
         persons.forEach(System.err::println);
 
